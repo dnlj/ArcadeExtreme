@@ -99,9 +99,7 @@ void BrickBreaker::fixedUpdate() {
 			if (i == 1) { // index 1 (item 2) Is the bottom wall
 				ball.setPosition({scrw / 2.0f, scrh / 2.0f});
 			
-				// TODO: Create a random functino in util that uses min/max and c++11 random generation for half decent results
-				// TODO: create the util::radToDeg and util::degToRad functions (template?)
-				float angle{static_cast<float>(rand() % 361) * (3.14159265358979323846264f/180.0f)};
+				float angle = util::getRandom(0.0f, 360.0f) * util::degToRad;
 				ball.setVelocity(sf::Vector2f{cosf(angle), sinf(angle)} * 500.0f);
 			} else {
 				// Handle bounce

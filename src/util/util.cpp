@@ -15,3 +15,7 @@ std::string util::to_string(const sf::Vector2f &vec) {
 	stream << "Vector2f(" << vec.x << ", " << vec.y << ")";
 	return stream.str();
 }
+
+float util::getRandom(float min, float max) {
+	return min + static_cast<float>(fmodf(rand(), max + 1.0f));
+}

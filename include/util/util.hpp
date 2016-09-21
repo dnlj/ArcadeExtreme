@@ -1,8 +1,11 @@
 #pragma once
 
+// C++ STD
 #include <iostream>
 #include <sstream>
+#include <cmath>
 
+// SFML
 #include <SFML/Graphics.hpp>
 
 /**
@@ -29,4 +32,19 @@ namespace util {
 	 * @return The string representation of @p vec.
 	 */
 	std::string to_string(const sf::Vector2f& vec);
+
+	/**
+	 * @brief Generates a random number N, @p min <= N <= @p max
+	 * 
+	 * @param[in] min - The smallest number to be generated.
+	 * @param[in] max - The largets number to be generated.
+	 * 
+	 * @return A number N, min <= N <= @p max
+	 */
+	float getRandom(float min, float max);
+
+	// TODO: Figure how to document these
+	constexpr float PI = 3.14159265358979323846264338327950288419716939937510582f;
+	constexpr float radToDeg = 180.0f / PI;
+	constexpr float degToRad = PI / 180.0f;
 }

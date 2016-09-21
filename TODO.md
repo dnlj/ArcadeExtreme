@@ -3,6 +3,7 @@
 * Add quadtrees to collision detection
 * Simplify/split BrickBreaker::fixedUpdate into more function
 * Cache PhysicsObject::getPointsGlobal
+* Update util::getRandom to use c++11 random library
 
 # Code Cleanup
 * Remove TODO's from code.
