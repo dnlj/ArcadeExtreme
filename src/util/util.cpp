@@ -9,3 +9,9 @@ bool util::isInside(sf::Vector2f point, sf::Vector2f position, sf::Vector2f size
 
 	return false;
 }
+
+std::string util::to_string(const sf::Vector2f &vec) {
+	std::ostringstream stream;
+	stream << "Vector2f(" << vec.x << ", " << vec.y << ")";
+	return stream.str();
+}

@@ -18,8 +18,6 @@
  * if (input::wasPressed("jump")) {
  *		// do jump
  * }
- * 
- * 
  * @endcode
  */
 namespace input {
@@ -37,16 +35,16 @@ namespace input {
 	 * @param key The keyboard key to bind to.
 	 * @return void
 	 */
-	void bind(const std::string &name, sf::Keyboard::Key key);
+	void bind(const std::string& name, sf::Keyboard::Key key);
 
 	/**
-	 * @brief Associates a name and a mouse button
+	 * @brief Associates a name and a mouse button.
 	 *
 	 * @param name The name of the bind.
 	 * @param button The mouse button to bind to.
 	 * @return void
 	 */
-	void bind(const std::string &name, sf::Mouse::Button button);
+	void bind(const std::string& name, sf::Mouse::Button button);
 
 	/**
 	 * @brief Determines if a bind is currently pressed.
@@ -56,17 +54,17 @@ namespace input {
 	 * @param name The name of the bind.
 	 * @return bool
 	 */
-	bool isPressed(const std::string &name);
+	bool isPressed(const std::string& name);
 
 	/**
 	 * @brief Determines if a bind was pressed this frame.
 	 *
-	 * Returns true if the bind was pressed this frame otherwise returns false
+	 * Returns true if the bind was pressed this frame otherwise returns false.
 	 *
 	 * @param name The name of the bind.
 	 * @return bool
 	 */
-	bool wasPressed(const std::string &name);
+	bool wasPressed(const std::string& name);
 
 	/**
 	 * @brief Determines if a bind was released this frame.
@@ -76,7 +74,7 @@ namespace input {
 	 * @param name The name of the bind.
 	 * @return bool
 	 */
-	bool wasReleased(const std::string &name);
+	bool wasReleased(const std::string& name);
 
 
 	/**
