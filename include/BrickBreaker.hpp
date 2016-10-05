@@ -28,6 +28,15 @@ class BrickBreaker : public Gamemode {
 		virtual void update(const float dt) override;
 		virtual void draw() override;
 
+		/**
+		 * @brief Clamps the minimum speed of BrickBreaker::ball
+		 * 
+		 * @param timeStep - The delta time since last call.
+		 *
+		 * @return void
+		 */
+		void clampMinSpeed(const float timeStep);
+
 	private:
 		float scrw;
 		float scrh;

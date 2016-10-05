@@ -55,8 +55,26 @@ BrickBreaker::~BrickBreaker() {
 namespace {
 	sf::Vector2f getReflectionVector(sf::Vector2f normal, sf::Vector2f incident) {
 		sf::Vector2f reflection = incident - 2 * util::vector::dot(incident, normal) * normal;
-		//return util::vector::normalize(reflection);
 		return reflection;
+	}
+
+	bool handleCollision(PhysicsObject& movingObject, PhysicsObject& fixedObject, bool respond = true) {
+		auto collision = movingObject.getCollision(fixedObject);
+
+		if (collision.collided && respond) {
+			// Get the vector needed to move movingObject out of fixedObject
+			auto offset = collision.axis * collision.distance;
+			
+			// Move movingObject out of fixedObject
+			movingObject.setPosition(movingObject.getPosition() + offset);
+
+			// Handle bounce
+			auto v = movingObject.getVelocity();
+			auto n = collision.axis;
+			movingObject.setVelocity(getReflectionVector(n, v));
+		}
+
+		return collision.collided;
 	}
 }
 
@@ -70,18 +88,10 @@ void BrickBreaker::fixedUpdate() {
 		if (!brick.getEnabled()) { continue; }
 
 		brick.fixedUpdate(this);
-		auto collision = ball.getCollision(brick);
-		
-		// TODO: move this into a function to avoid duplicate code
-		if (collision.collided) {
-			auto offset = collision.axis * collision.distance;
-			ball.setPosition(ball.getPosition() + offset);
 
-			// Handle bounce
-			auto v = ball.getVelocity();
-			auto n = collision.axis;
+		if (handleCollision(ball, brick)) {
+			// The brick has been hit. Disable it.
 			brick.setEnabled(false);
-			ball.setVelocity(getReflectionVector(n, v));
 		}
 	}
 
@@ -89,76 +99,36 @@ void BrickBreaker::fixedUpdate() {
 	for (int i=0; i < walls.size(); ++i) {
 		auto &wall = walls[i];
 		wall.fixedUpdate(this);
-		auto collision = ball.getCollision(wall);
 
-		// TODO: move this into a function to avoid duplicate code
-		if (collision.collided) {
-			auto offset = collision.axis * collision.distance;
-			ball.setPosition(ball.getPosition() + offset);
+		if (handleCollision(ball, wall, i != 1) && i == 1) {
+			// Set it back to the center
+			ball.setPosition({scrw / 2.0f, scrh / 2.0f});
 
-			if (i == 1) { // index 1 (item 2) Is the bottom wall
-				ball.setPosition({scrw / 2.0f, scrh / 2.0f});
-			
-				float angle = util::getRandom(0.0f, 360.0f) * util::degToRad;
-				ball.setVelocity(sf::Vector2f{cosf(angle), sinf(angle)} * 500.0f);
-			} else {
-				// Handle bounce
-				auto v = ball.getVelocity();
-				auto n = collision.axis;
-				ball.setVelocity(getReflectionVector(n, v));
-			}
+			// Give the ball a random velocity
+			float angle = util::getRandom(0.0f, 360.0f) * util::degToRad;
+			ball.setVelocity(sf::Vector2f{cosf(angle), sinf(angle)} * 500.0f);
 		}
 	}
 
 	// Paddle
-	{
-		auto collision = ball.getCollision(paddle);
+	if (handleCollision(ball, paddle)) {
+		// Allow the paddle to move the ball some
+		auto motion = paddle.getVelocity() * 0.5f;
 
-		// TODO: move this into a function to avoid duplicate code
-		if (collision.collided) {
-			auto offset = collision.axis * collision.distance;
-			ball.setPosition(ball.getPosition() + offset);
+		// If the ball is going faster then sqrt(speedLimitSquared) slow it down when it hits the paddle
+		auto v = ball.getVelocity();
+		float speedSquared = util::vector::squaredNorm(v);
+		constexpr float speedLimitSquared = 800.0f * 800.0f;
+		float slowMulti = speedSquared < speedLimitSquared ? 1.0f : 0.75f;
 
-			// Handle bounce
-			auto v = ball.getVelocity();
-			auto n = collision.axis;
-			auto motion = paddle.getVelocity() * 0.5f; // Add some of the paddles motion to the ball to give the player some control over the ball
-			ball.setVelocity(motion + getReflectionVector(n, v));
-
-			// If the ball is going faster then sqrt(speedLimitSquared) slow it down when it hits the paddle
-			v = ball.getVelocity();
-			float speedSquared = util::vector::squaredNorm(v);
-			constexpr float speedLimitSquared = 800.0f * 800.0f;
-			float slowMulti = speedSquared < speedLimitSquared ? 1.0f : 0.75f;
-			ball.setVelocity(v * slowMulti);
-		}
+		// Update the velocity
+		ball.setVelocity(v * slowMulti + motion);
 	}
 
-	// TODO: Put this into its own private/protected method
-	{ // Prevent the ball from moving to slow
-		constexpr float minY = 150.0f;
-		constexpr float minX = 100.0f;
-		constexpr float increaseAmmountY = 20.0f;
-		constexpr float increaseAmmountX = 10.0f;
-		auto vel = ball.getVelocity();
-
-		// If the ball is moving to slower than min_ increase it's _ component by increaseAmmount_ every second.
-		// This helps keep the game moving, and it prevents the ball from getting stuck.
-		if (vel.x != 0.0f || vel.y != 0.0f) {
-			if (fabsf(vel.y) < minY) {
-				vel.y += std::copysignf(increaseAmmountY * timeStep, vel.y);
-				ball.setVelocity(vel);
-			}
-
-			if (fabsf(vel.x) < minX) {
-				vel.x += std::copysignf(increaseAmmountX * timeStep, vel.x);
-				ball.setVelocity(vel);
-			}
-		}
-	}
+	clampMinSpeed(timeStep);
 
 	////////////////////////////////////////
-	/// TODO: JUST FOR TESTING
+	// TODO: JUST FOR TESTING
 	////////////////////////////////////////
 	bricks[0].setPosition(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
 	testBrick.lineVerts = {};
@@ -202,5 +172,27 @@ void BrickBreaker::draw() {
 
 	for (auto &wall : walls) {
 		wall.draw(this);
+	}
+}
+
+void BrickBreaker::clampMinSpeed(const float timeStep) {
+	constexpr float minY = 150.0f;
+	constexpr float minX = 100.0f;
+	constexpr float increaseAmmountY = 20.0f;
+	constexpr float increaseAmmountX = 10.0f;
+	auto vel = ball.getVelocity();
+
+	// If the ball is moving to slower than min_ increase it's _ component by increaseAmmount_ every second.
+	// This helps keep the game moving. It also prevents the ball from getting stuck.
+	if (vel.x != 0.0f || vel.y != 0.0f) {
+		if (fabsf(vel.y) < minY) {
+			vel.y += std::copysignf(increaseAmmountY * timeStep, vel.y);
+			ball.setVelocity(vel);
+		}
+
+		if (fabsf(vel.x) < minX) {
+			vel.x += std::copysignf(increaseAmmountX * timeStep, vel.x);
+			ball.setVelocity(vel);
+		}
 	}
 }
