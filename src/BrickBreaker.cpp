@@ -213,36 +213,43 @@ void BrickBreaker::draw() {
 }
 
 void BrickBreaker::clampMinSpeed(const float timeStep) {
+	// The minimum speed on each axis
 	constexpr float minY = 150.0f;
 	constexpr float minX = 100.0f;
-	constexpr float increaseAmmountY = 20.0f;
-	constexpr float increaseAmmountX = 10.0f;
+	
+	// The amount to increase by on each axis
+	constexpr float increaseAmountY = 20.0f;
+	constexpr float increaseAmountX = 10.0f;
 	auto vel = ball.getVelocity();
 
 	// If the ball is moving to slower than min_ increase it's _ component by increaseAmmount_ every second.
 	// This helps keep the game moving. It also prevents the ball from getting stuck.
 	if (vel.x != 0.0f || vel.y != 0.0f) {
 		if (fabsf(vel.y) < minY) {
-			vel.y += std::copysignf(increaseAmmountY * timeStep, vel.y);
-			ball.setVelocity(vel);
+			// Increase velocity
+			vel.y += std::copysignf(increaseAmountY * timeStep, vel.y);
 		}
 
 		if (fabsf(vel.x) < minX) {
-			vel.x += std::copysignf(increaseAmmountX * timeStep, vel.x);
-			ball.setVelocity(vel);
+			// Increase velocity
+			vel.x += std::copysignf(increaseAmountX * timeStep, vel.x);
 		}
+
+		// Update velocity
+		ball.setVelocity(vel);
 	}
 }
 
 void BrickBreaker::clampMaxSpeed(const float timeStep) {
+	// The maximum velocity on each axis
 	constexpr float maxY = 500.0f;
 	constexpr float maxX = 750.0f;
 	auto vel = ball.getVelocity();
 
+	// Clamp velocity
 	vel.x = util::clamp(-maxX, maxX, vel.x);
 	vel.y = util::clamp(-maxY, maxY, vel.y);
 
-	std::cout << util::to_string(vel) << "\n";
-
+	// Update velocity
 	ball.setVelocity(vel);
 }
