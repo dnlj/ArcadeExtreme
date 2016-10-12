@@ -58,20 +58,23 @@ namespace {
 		return reflection;
 	}
 
-	bool handleCollision(PhysicsObject& movingObject, PhysicsObject& fixedObject, bool respond = true) {
-		auto collision = movingObject.getCollision(fixedObject);
+	bool handleCollision(Ball& ball, PhysicsObject& fixedObject, bool respond = true) {
+		auto collision = ball.getCollision(fixedObject);
 
 		if (collision.collided && respond) {
 			// Get the vector needed to move movingObject out of fixedObject
 			auto offset = collision.axis * collision.distance;
 			
 			// Move movingObject out of fixedObject
-			movingObject.setPosition(movingObject.getPosition() + offset);
+			ball.setPosition(ball.getPosition() + offset);
 
 			// Handle bounce
-			auto v = movingObject.getVelocity();
+			auto v = ball.getVelocity();
 			auto n = collision.axis;
-			movingObject.setVelocity(getReflectionVector(n, v));
+			ball.setVelocity(getReflectionVector(n, v));
+
+			// Bounce effect
+			ball.bounceEffect();
 		}
 
 		return collision.collided;

@@ -26,6 +26,13 @@ class Ball : public PhysicsObject {
 		 */
 		float getRadius() const;
 
+		/**
+		 * @brief Does the bounce effect
+		 * 
+		 * @return void
+		 */
+		void bounceEffect();
+
 	private:
 		sf::CircleShape shape;
 };

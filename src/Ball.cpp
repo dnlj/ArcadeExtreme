@@ -15,15 +15,28 @@ Ball::Ball(float radius, unsigned int pointCount) : shape{radius, pointCount} {
 	}
 
 	calcNormals();
-
-	std::cout << "origin: " << origin.x << std::endl;
 }
 
 void Ball::fixedUpdate(Gamemode *gm) {
-	position += velocity * gm->getFixedTimeStep();
+	const float timeStep = gm->getFixedTimeStep();
+	
+	// Update position
+	position += velocity * timeStep;
 }
 
 void Ball::update(Gamemode *gm, const float dt) {
+	auto scale = shape.getScale();
+
+	// Decrease scale by 98% every second
+	scale.x = scale.x * powf(0.02f, dt);
+	scale.y = scale.y * powf(0.02f, dt);
+
+	// Don't let scale go below 1.0f
+	scale.x = std::max(1.0f, scale.x);
+	scale.y = std::max(1.0f, scale.y);
+
+	// Update scale
+	shape.setScale(scale);
 }
 
 void Ball::draw(Gamemode *gm) {
@@ -35,4 +48,20 @@ void Ball::draw(Gamemode *gm) {
 
 float Ball::getRadius() const {
 	return shape.getRadius();
+}
+
+void Ball::bounceEffect() {
+	// The amount to scale by every bounce
+	constexpr float scaleAmount = 1.70f;
+
+	// If it has recently bounced dont do it again
+	const auto scale = shape.getScale();
+	if (scale.x > 1.1f || scale.y > 1.1f) { return; }
+
+	// Scale
+	float scaleX = scale.x * scaleAmount;
+	float scaleY = scale.y * scaleAmount;
+	
+	// Update scale
+	shape.setScale(scaleX, scaleY);
 }
