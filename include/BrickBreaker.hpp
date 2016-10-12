@@ -36,6 +36,14 @@ class BrickBreaker : public Gamemode {
 		 * @return void
 		 */
 		void clampMinSpeed(const float timeStep);
+		/**
+		 * @brief Clamps the maximum speed of BrickBreaker::ball
+		 *
+		 * @param timeStep - The delta time since last call.
+		 *
+		 * @return void
+		 */
+		void clampMaxSpeed(const float timeStep);
 
 	private:
 		float scrw;
@@ -45,4 +53,7 @@ class BrickBreaker : public Gamemode {
 		TesterBrick testBrick;
 		std::vector<Brick> bricks;
 		std::vector<Wall> walls;
+		sf::Font font;
+		sf::Text scoreText;
+		int score;
 };

@@ -1,12 +1,25 @@
+// Arcade
 #include <BrickBreaker.hpp>
 
 BrickBreaker::BrickBreaker(sf::RenderWindow &window, float fixedTimeStep)
 		: Gamemode{window, fixedTimeStep},
 		scrw{static_cast<float>(window.getSize().x)},
 		scrh{static_cast<float>(window.getSize().y)},
-		paddle{150.0f, 30.0f},
+		paddle{200.0f, 30.0f},
 		ball{25.0f, 16},
-		walls{} {
+		walls{},
+		font{},
+		score{}
+		{
+
+	font.loadFromFile("C:/Windows/Fonts/arial.ttf");
+
+	scoreText.setFont(font);
+	scoreText.setCharacterSize(32);
+	scoreText.setFillColor(sf::Color::White);
+	scoreText.setOutlineColor(sf::Color::Black);
+	scoreText.setOutlineThickness(3);
+	scoreText.setPosition(scrw * 0.01f, scrw * 0.01f);
 	
 	paddle.setPosition({scrw / 2.0f, scrh - 10.0f - paddle.getSize().y / 2.0f});
 
@@ -29,7 +42,7 @@ BrickBreaker::BrickBreaker(sf::RenderWindow &window, float fixedTimeStep)
 			const float percentX = static_cast<float>(x) / static_cast<float>(brickCountX);
 
 			bricks.back().setColor(util::toColor(
-				percentX,
+				1.0f,
 				percentY,
 				percentY
 			));
@@ -103,6 +116,7 @@ void BrickBreaker::fixedUpdate() {
 		if (handleCollision(ball, brick)) {
 			// The brick has been hit. Disable it.
 			brick.setEnabled(false);
+			score += 10;
 		}
 	}
 
@@ -137,6 +151,7 @@ void BrickBreaker::fixedUpdate() {
 	}
 
 	clampMinSpeed(timeStep);
+	clampMaxSpeed(timeStep);
 
 	////////////////////////////////////////
 	// TODO: JUST FOR TESTING
@@ -163,10 +178,12 @@ void BrickBreaker::update(float dt) {
 	paddle.update(this, dt);
 	ball.update(this, dt);
 
+	// Bricks
 	for (auto &brick : bricks) {
 		brick.update(this, dt);
 	}
 
+	// Walls
 	for (auto &wall : walls) {
 		wall.update(this, dt);
 	}
@@ -177,13 +194,22 @@ void BrickBreaker::draw() {
 	paddle.draw(this);
 	ball.draw(this);
 	
+	// Bricks
 	for (auto &brick : bricks) {
 		brick.draw(this);
 	}
 
+	// Walls
 	for (auto &wall : walls) {
 		wall.draw(this);
 	}
+
+	// Score
+	{
+		scoreText.setString(std::to_string(score));
+		window.draw(scoreText);
+	}
+	
 }
 
 void BrickBreaker::clampMinSpeed(const float timeStep) {
@@ -206,4 +232,17 @@ void BrickBreaker::clampMinSpeed(const float timeStep) {
 			ball.setVelocity(vel);
 		}
 	}
+}
+
+void BrickBreaker::clampMaxSpeed(const float timeStep) {
+	constexpr float maxY = 500.0f;
+	constexpr float maxX = 750.0f;
+	auto vel = ball.getVelocity();
+
+	vel.x = util::clamp(-maxX, maxX, vel.x);
+	vel.y = util::clamp(-maxY, maxY, vel.y);
+
+	std::cout << util::to_string(vel) << "\n";
+
+	ball.setVelocity(vel);
 }

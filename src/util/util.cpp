@@ -31,3 +31,7 @@ sf::Color util::toColor(float r, float g, float b) {
 float util::lerp(float a, float b, float percent) {
 	return a + (b - a) * percent;
 }
+
+float util::clamp(float min, float max, float value) {
+	return std::max(min, std::min(max, value));
+}

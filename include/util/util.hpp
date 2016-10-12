@@ -55,15 +55,26 @@ namespace util {
 	sf::Color toColor(float r, float g, float b);
 
 	/**
-	* @brief Linearly interpolates between @p a and @p b
-	*
-	* @param[in] a - The first value to interpolate between
-	* @param[in] b - The second value to interpolate between
-	* @param[in] percent - The percent inbetween @p a and @p b
-	*
-	* @return Returns a value @p percent percent between @p a and @p b
-	*/
+	 * @brief Linearly interpolates between @p a and @p b
+	 *
+	 * @param[in] a - The first value to interpolate between
+	 * @param[in] b - The second value to interpolate between
+	 * @param[in] percent - The percent inbetween @p a and @p b
+	 *
+	 * @return Returns a value @p percent percent between @p a and @p b
+	 */
 	float lerp(float a, float b, float percent);
+
+	/**
+	 * @brief Clamps @p value between @p a and @p b
+	 *
+	 * @param[in] min - The minimum value to clamp to
+	 * @param[in] max - The maximum value to clamp to
+	 * @param[in] value - The number to clamp inbetween @p a and @p b
+	 *
+	 * @return Returns a value clamped to @p min and @p max
+	 */
+	float clamp(float min, float max, float value);
 
 	// TODO: Figure how to document these
 	constexpr float PI = 3.14159265358979323846264338327950288419716939937510582f;
