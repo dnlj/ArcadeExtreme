@@ -43,3 +43,7 @@ void Brick::setEnabled(bool enabled) {
 bool Brick::getEnabled() const {
 	return enabled;
 }
+
+void Brick::setColor(sf::Color color) {
+	shape.setFillColor(color);
+}

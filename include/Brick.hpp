@@ -32,6 +32,15 @@ class Brick : public PhysicsObject {
 		 */
 		bool getEnabled() const;
 
+		/**
+		 * @brief Sets the color of the Brick.
+		 * 
+		 * @param[in] color - The color to set the brick to.
+		 * 
+		 * @return void
+		 */
+		void setColor(sf::Color color);
+
 	private:
 		sf::RectangleShape shape;
 		bool enabled;

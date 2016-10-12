@@ -25,6 +25,14 @@ BrickBreaker::BrickBreaker(sf::RenderWindow &window, float fixedTimeStep)
 		for (int y=0; y < brickCountY; ++y) {
 			bricks.emplace_back(brickWidth, brickHeight);
 			bricks.back().setPosition({x * brickWidth + halfbrickWidth, y * brickHeight + halfbrickHeight});
+			const float percentY = static_cast<float>(y) / static_cast<float>(brickCountY);
+			const float percentX = static_cast<float>(x) / static_cast<float>(brickCountX);
+
+			bricks.back().setColor(util::toColor(
+				percentX,
+				percentY,
+				percentY
+			));
 		}
 	}
 

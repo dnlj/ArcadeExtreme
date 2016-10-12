@@ -19,3 +19,15 @@ std::string util::to_string(const sf::Vector2f &vec) {
 float util::getRandom(float min, float max) {
 	return min + static_cast<float>(fmodf(rand(), max + 1.0f));
 }
+
+sf::Color util::toColor(float r, float g, float b) {
+	return sf::Color{
+		static_cast<sf::Uint8>(r * 255.0f),
+		static_cast<sf::Uint8>(g * 255.0f),
+		static_cast<sf::Uint8>(b * 255.0f)
+	};
+}
+
+float util::lerp(float a, float b, float percent) {
+	return a + (b - a) * percent;
+}

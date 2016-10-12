@@ -43,6 +43,28 @@ namespace util {
 	 */
 	float getRandom(float min, float max);
 
+	/**
+	 * @brief Constructs a sf::Color from float percent values
+	 * 
+	 * @param[in] r - The percent red value for the color
+	 * @param[in] g - The percent green value for the color
+	 * @param[in] b - The percent blue value for the color
+	 * 
+	 * @return A color constructed from @p r @p g and @p b 
+	 */
+	sf::Color toColor(float r, float g, float b);
+
+	/**
+	* @brief Linearly interpolates between @p a and @p b
+	*
+	* @param[in] a - The first value to interpolate between
+	* @param[in] b - The second value to interpolate between
+	* @param[in] percent - The percent inbetween @p a and @p b
+	*
+	* @return Returns a value @p percent percent between @p a and @p b
+	*/
+	float lerp(float a, float b, float percent);
+
 	// TODO: Figure how to document these
 	constexpr float PI = 3.14159265358979323846264338327950288419716939937510582f;
 	constexpr float radToDeg = 180.0f / PI;
