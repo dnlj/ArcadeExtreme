@@ -14,4 +14,8 @@ namespace ui {
 		position.x = x;
 		position.y = y;
 	};
+
+	sf::Vector2f UIElement::getPosition() const {
+		return position;
+	}
 }

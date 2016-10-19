@@ -2,6 +2,9 @@
 
 
 namespace ui {
+	Button::Button() : Button(100, 50) {
+	};
+
 	Button::Button(int width, int height) :
 			shape{{static_cast<float>(width), static_cast<float>(height)}},
 			doClickFunction{} {
@@ -43,5 +46,9 @@ namespace ui {
 
 	void Button::setDoClick(std::function<void(void)> func) {
 		doClickFunction = func;
+	}
+
+	sf::Vector2f Button::getSize() const {
+		return shape.getSize();
 	}
 }

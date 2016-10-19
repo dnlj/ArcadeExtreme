@@ -36,10 +36,6 @@ namespace {
 				window.close();
 			}
 		}
-
-		//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-		//	window.close();
-		//}
 	}
 
 	// TODO: Document

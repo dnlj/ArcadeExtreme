@@ -22,11 +22,16 @@ namespace ui {
 	class Button : public UIElement {
 		public:
 			/**
-			 * @brief Creates a button with the width and height specified.
-			 *
-			 * @param width The width of the button.
-			 * @param height The height of the button.
+			 * @brief Creates a button.
 			 */
+			Button();
+
+			/**
+			* @brief Creates a button with the width and height specified.
+			*
+			* @param width The width of the button.
+			* @param height The height of the button.
+			*/
 			Button(int width, int height);
 
 			/**
@@ -71,6 +76,13 @@ namespace ui {
 			 * @return void
 			 */
 			void setDoClick(std::function<void(void)> func);
+
+			/**
+			 * @brief Gets the size of the Button
+			 * 
+			 * @return A vector whos components are the width and height of the Button
+			 */
+			sf::Vector2f getSize() const;
 
 
 		private:

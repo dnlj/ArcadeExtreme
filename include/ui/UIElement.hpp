@@ -41,6 +41,12 @@ namespace ui {
 			 * @return void
 			 */
 			virtual void setPosition(float x, float y);
+			/**
+			 * @brief Gets the position of the ui element.
+			 * 
+			 * @return The position of this Button
+			 */
+			virtual sf::Vector2f getPosition() const;
 
 		protected:
 			/**
