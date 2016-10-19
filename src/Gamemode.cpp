@@ -17,3 +17,7 @@ sf::RenderWindow& Gamemode::getWindow() const {
 float Gamemode::getFixedTimeStep() const {
 	return fixedTimeStep;
 }
+
+void Gamemode::setPaused(bool paused) {
+	this->paused = paused;
+}

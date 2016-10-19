@@ -11,10 +11,11 @@
 // SFML
 #include <SFML/Graphics.hpp>
 
-// ArcadeExtreme
+// Arcade Extreme
 #include <input/input.hpp>
 #include <ui/UIElement.hpp>
 #include <ui/Button.hpp>
+#include <ui/MainMenu.hpp>
 #include <Gamemode.hpp>
 #include <BrickBreaker.hpp>
 
@@ -36,9 +37,9 @@ namespace {
 			}
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-			window.close();
-		}
+		//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+		//	window.close();
+		//}
 	}
 
 	// TODO: Document
@@ -58,52 +59,78 @@ namespace {
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "SFML works!");
 	//window.setVerticalSyncEnabled(true);
-	window.setMouseCursorVisible(false);
+	window.setMouseCursorVisible(true);
+	std::unique_ptr<Gamemode> gm{nullptr};
 
+
+	// Setup binds
 	input::bind("click", sf::Mouse::Left);
-
 	input::bind("left", sf::Keyboard::Left);
 	input::bind("right", sf::Keyboard::Right);
 	input::bind("up", sf::Keyboard::Up);
 	input::bind("down", sf::Keyboard::Down);
-
-	//ui::Button b{100, 50};
-	//b.setPosition(50,50);
-
-	std::unique_ptr<Gamemode> gm(new BrickBreaker{window, 1.0f / 60.0f});
+	input::bind("menu", sf::Keyboard::Escape);
 
 
+	// UI
+	ui::MainMenu mainMenu{gm, window};
+
+
+	// Game loop
 	auto oldTime = std::chrono::high_resolution_clock::now();
 	double accumulator = 0.0;
-	const float fixedTimeStep = gm->getFixedTimeStep();
 	std::vector<double> frameTimes(100, 0.0);
 	int nextFrameTime = 0;
-	while (window.isOpen()) {
+	while (window.isOpen()) {		
+		if (gm != nullptr) {
+			gm->getFixedTimeStep();
+		}
+
+
 		// Get the current frameTime
 		auto currentTime = std::chrono::high_resolution_clock::now();
 		double frameTime = getTimeDelta(oldTime, currentTime);
 		oldTime = currentTime;
-		accumulator += frameTime;
+		if (gm != nullptr) {
+			accumulator += frameTime;
+		}
+
 		
 		// Check if the window should close.
 		checkForClose(window);
 		
+
 		// Fixed update
-		for (;accumulator >= fixedTimeStep; accumulator -= fixedTimeStep) {
-			gm->fixedUpdate();
+		if (gm != nullptr) {
+			const float fixedTimeStep = gm->getFixedTimeStep();
+			for (;accumulator >= fixedTimeStep; accumulator -= fixedTimeStep) {
+				gm->fixedUpdate();
+			}
 		}
+
 
 		// Update
 		input::update();
-		gm->update(static_cast<float>(frameTime));
+		mainMenu.update(window);
+		if (gm != nullptr) {
+			gm->update(static_cast<float>(frameTime));
+		}
+
 
 		// Render update
 		window.clear();
-		gm->draw();
+		
+		if (gm != nullptr) {
+			gm->draw();
+		}
+
+		mainMenu.draw(window);
 		window.display();
+
 
 		// Frame rate title update
 		updateTitle(window, frameTimes);
+
 
 		// Update frameTimes
 		frameTimes[nextFrameTime++] = frameTime;

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <random>
 #include <chrono>
+#include <functional>
 
 #include <SFML/Graphics.hpp>
 
@@ -63,8 +64,17 @@ namespace ui {
 			 */
 			virtual void draw(sf::RenderWindow &window) override;
 
+			/**
+			 * @brief Set the function that is called when the Button is clicked
+			 * 
+			 * @param func The function that is called when the Button is clicked
+			 * @return void
+			 */
+			void setDoClick(std::function<void(void)> func);
+
 
 		private:
 			sf::RectangleShape shape;
+			std::function<void()> doClickFunction;
 	};
 }

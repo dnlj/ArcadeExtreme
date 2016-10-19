@@ -11,6 +11,7 @@ BrickBreaker::BrickBreaker(sf::RenderWindow &window, float fixedTimeStep)
 		font{},
 		score{}
 		{
+	paused = false;
 
 	font.loadFromFile("C:/Windows/Fonts/arial.ttf");
 
@@ -103,6 +104,8 @@ namespace {
 }
 
 void BrickBreaker::fixedUpdate() {
+	if (paused) { return; };
+
 	const float timeStep = getFixedTimeStep();
 	ball.fixedUpdate(this);
 	paddle.fixedUpdate(this);
@@ -156,24 +159,26 @@ void BrickBreaker::fixedUpdate() {
 	////////////////////////////////////////
 	// TODO: JUST FOR TESTING
 	////////////////////////////////////////
-	bricks[0].setPosition(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
-	testBrick.lineVerts = {};
-	testBrick.fixedUpdate(this);
-	for (int i=1; i < bricks.size(); ++i) {
-		const auto &brick = bricks[i];
-		auto collision = testBrick.getCollision(brick);
-	
-		if (collision.collided) {
-			auto offset = collision.axis * (collision.distance + 0.1f);
-			sf::Vertex vert1{testBrick.getPosition(), sf::Color::Red};
-			sf::Vertex vert2{testBrick.getPosition() + offset, sf::Color::Red};
-			testBrick.lineVerts.push_back(vert1);
-			testBrick.lineVerts.push_back(vert2);
-		}
-	}
+	//bricks[0].setPosition(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
+	//testBrick.lineVerts = {};
+	//testBrick.fixedUpdate(this);
+	//for (int i=1; i < bricks.size(); ++i) {
+	//	const auto &brick = bricks[i];
+	//	auto collision = testBrick.getCollision(brick);
+	//
+	//	if (collision.collided) {
+	//		auto offset = collision.axis * (collision.distance + 0.1f);
+	//		sf::Vertex vert1{testBrick.getPosition(), sf::Color::Red};
+	//		sf::Vertex vert2{testBrick.getPosition() + offset, sf::Color::Red};
+	//		testBrick.lineVerts.push_back(vert1);
+	//		testBrick.lineVerts.push_back(vert2);
+	//	}
+	//}
 };
 
 void BrickBreaker::update(float dt) {
+	if (paused) { return; };
+
 	testBrick.update(this, dt);
 	paddle.update(this, dt);
 	ball.update(this, dt);

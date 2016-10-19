@@ -65,7 +65,14 @@ class Gamemode {
 		 */
 		float getFixedTimeStep() const;
 
+		/**
+		 * @brief
+		 * 
+		 */
+		void setPaused(bool paused);
+
 	protected:
 		sf::RenderWindow &window;
 		const float fixedTimeStep;
+		bool paused;
 };
