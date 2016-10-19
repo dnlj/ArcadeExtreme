@@ -37,6 +37,14 @@ void Ball::update(Gamemode *gm, const float dt) {
 
 	// Update scale
 	shape.setScale(scale);
+
+	// Update color
+	float percentY = position.y / gm->getWindow().getSize().y;
+	shape.setFillColor(util::toColor(
+		1.0f,
+		percentY,
+		percentY
+	));
 }
 
 void Ball::draw(Gamemode *gm) {
