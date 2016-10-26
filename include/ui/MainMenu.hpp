@@ -51,7 +51,7 @@ namespace ui {
 
 	template<class T>
 	void MainMenu::addButton(sf::RenderWindow& window, const std::string& label) {
-		buttons.emplace_back(buttonWidth, buttonHeight);
+		buttons.emplace_back(static_cast<int>(buttonWidth), static_cast<int>(buttonHeight));
 		buttons.back().setDoClick([&]() {
 			gamemode.reset(new T{window, 1.0f / 60.0f});
 			enabled = false;

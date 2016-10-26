@@ -157,7 +157,7 @@ void BrickBreaker::fixedUpdate() {
 	clampMaxSpeed(timeStep);
 
 	////////////////////////////////////////
-	// TODO: JUST FOR TESTING
+	// NOTE: JUST FOR TESTING
 	////////////////////////////////////////
 	//bricks[0].setPosition(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
 	//testBrick.lineVerts = {};

@@ -1,15 +1,21 @@
 # General
 * Figure out how to document members
+* Add text to buttons
 * Add quadtrees to collision detection
-* Simplify/split BrickBreaker::fixedUpdate into more function
 * Cache PhysicsObject::getPointsGlobal
 * Update util::getRandom to use c++11 random library
 
 # Code Cleanup
+* Split crate MainMenu.tpp and move templates there
 * Figure out how to document template parameters. Look into Boost QuickBook?
 * Move as many of the includes from the hpp files to the cpp files as possible
 * Remove TODO's from code.
 * Maybe move all the brickbreaker specific stuff into a namespace? Ball, Paddle, Wall, BrickBreaker, etc.
+
+# Game Modes
+* Brick Breaker
+* Alien Invaders
+* Snake
 
 # Reference/Reading
 * http://www.gamasutra.com/view/feature/1630/breaking_down_breakout_system_and_.php?print=1

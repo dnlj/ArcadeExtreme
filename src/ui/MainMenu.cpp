@@ -1,7 +1,8 @@
 // Arcade Extreme
-#include <BrickBreaker.hpp>
 #include <ui/MainMenu.hpp>
+#include <BrickBreaker.hpp>
 #include <input/input.hpp>
+#include <AlienInvaders/AlienInvaders.hpp>
 
 
 
@@ -11,11 +12,11 @@ namespace ui {
 			gamemode{gm},
 			enabled{true} {
 
-		addButton<BrickBreaker>(window, "BrickBreaker");
-		addButton<BrickBreaker>(window, "BrickBreaker");
-		addButton<BrickBreaker>(window, "BrickBreaker");
-		addButton<BrickBreaker>(window, "BrickBreaker");
-		addButton<BrickBreaker>(window, "BrickBreaker");
+		addButton<BrickBreaker>(window, "Brick Breaker");
+		addButton<AlienInvaders::AlienInvaders>(window, "Alien Invaders");
+		//addButton<BrickBreaker>(window, "BrickBreaker");
+		//addButton<BrickBreaker>(window, "BrickBreaker");
+		//addButton<BrickBreaker>(window, "BrickBreaker");
 
 		performLayout(window);
 	}
