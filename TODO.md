@@ -4,6 +4,7 @@
 * Add quadtrees to collision detection
 * Cache PhysicsObject::getPointsGlobal
 * Update util::getRandom to use c++11 random library
+* Add proper physics, what you are doing now is crazy   xf += v*t      vf += a*t     a=F/m    and use forces to move
 
 # Code Cleanup
 * Split crate MainMenu.tpp and move templates there
