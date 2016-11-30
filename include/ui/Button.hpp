@@ -84,9 +84,16 @@ namespace ui {
 			 */
 			sf::Vector2f getSize() const;
 
+			/**
+			 * 
+			 * 
+			 */
+			void setText(const std::string& text);
+
 
 		private:
 			sf::RectangleShape shape;
 			std::function<void()> doClickFunction;
+			sf::Text text;
 	};
 }

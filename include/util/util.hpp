@@ -75,6 +75,13 @@ namespace util {
 	 * @return Returns a value clamped to @p min and @p max
 	 */
 	float clamp(float min, float max, float value);
+	
+	/**
+	 * @brief Gets the global font.
+	 * 
+	 * @return Retuns the global font.
+	 */
+	const sf::Font& getFont();
 
 	// TODO: Figure how to document these
 	constexpr float PI = 3.14159265358979323846264338327950288419716939937510582f;

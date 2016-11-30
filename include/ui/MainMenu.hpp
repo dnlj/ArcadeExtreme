@@ -45,16 +45,23 @@ namespace ui {
 			std::vector<Button> buttons;
 			std::unique_ptr<Gamemode>& gamemode;
 			bool enabled;
-			constexpr static float buttonWidth = 200.0f;
+
+			// NOTE: when changing these you need to clean solution then build solution. I think this is a bug with Visual Studio.
+			constexpr static float buttonWidth = 250.0f;
 			constexpr static float buttonHeight = 50.0f;
 	};
 
+	// TODO: move into tpp file
 	template<class T>
 	void MainMenu::addButton(sf::RenderWindow& window, const std::string& label) {
 		buttons.emplace_back(static_cast<int>(buttonWidth), static_cast<int>(buttonHeight));
-		buttons.back().setDoClick([&]() {
+
+		auto& button = buttons.back();
+		button.setDoClick([&]() {
 			gamemode.reset(new T{window, 1.0f / 60.0f});
 			enabled = false;
 		});
+
+		button.setText(label);
 	}
 }

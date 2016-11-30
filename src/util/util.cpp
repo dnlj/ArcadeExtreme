@@ -35,3 +35,15 @@ float util::lerp(float a, float b, float percent) {
 float util::clamp(float min, float max, float value) {
 	return std::max(min, std::min(max, value));
 }
+
+const sf::Font& util::getFont() {
+	static sf::Font font;
+	static bool loaded = false;
+
+	if (!loaded) {
+		font.loadFromFile("C:/Windows/Fonts/arial.ttf");
+		loaded = true;
+	}
+
+	return font;
+}

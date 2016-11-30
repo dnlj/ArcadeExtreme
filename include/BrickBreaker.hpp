@@ -53,7 +53,6 @@ class BrickBreaker : public Gamemode {
 		TesterBrick testBrick;
 		std::vector<Brick> bricks;
 		std::vector<Wall> walls;
-		sf::Font font;
 		sf::Text scoreText;
 		int score;
 };

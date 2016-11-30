@@ -8,18 +8,15 @@ BrickBreaker::BrickBreaker(sf::RenderWindow &window, float fixedTimeStep)
 		paddle{200.0f, 30.0f},
 		ball{25.0f, 16},
 		walls{},
-		font{},
 		score{}
 		{
 	paused = false;
 
-	font.loadFromFile("C:/Windows/Fonts/arial.ttf");
-
-	scoreText.setFont(font);
+	scoreText.setFont(util::getFont());
 	scoreText.setCharacterSize(32);
 	scoreText.setFillColor(sf::Color::White);
 	scoreText.setOutlineColor(sf::Color::Black);
-	scoreText.setOutlineThickness(3);
+	scoreText.setOutlineThickness(2);
 	scoreText.setPosition(scrw * 0.01f, scrw * 0.01f);
 	
 	paddle.setPosition({scrw / 2.0f, scrh - 10.0f - paddle.getSize().y / 2.0f});
