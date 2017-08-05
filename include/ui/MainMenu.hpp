@@ -15,10 +15,10 @@
 namespace ui {
 
 	/**
-	* @brief The main menu for the game.
-	*
-	* Should be used as a base class for any clickable ui.
-	*/
+	 * @brief The main menu for the game.
+	 *
+	 * Should be used as a base class for any clickable ui.
+	 */
 	class MainMenu : public UIElement {
 		public:
 			MainMenu(std::unique_ptr<Gamemode>& gm, sf::RenderWindow& window);
@@ -33,7 +33,7 @@ namespace ui {
 			void performLayout(const sf::RenderWindow& window);
 
 			/**
-			 * @breif adds a Button to MainMenu::buttons
+			 * @brief adds a Button to MainMenu::buttons
 			 * 
 			 * @param window - The window to pass on to the Gamemode
 			 * @param label - The label to put on the button
@@ -51,7 +51,6 @@ namespace ui {
 			constexpr static float buttonHeight = 50.0f;
 	};
 
-	// TODO: move into tpp file
 	template<class T>
 	void MainMenu::addButton(sf::RenderWindow& window, const std::string& label) {
 		buttons.emplace_back(static_cast<int>(buttonWidth), static_cast<int>(buttonHeight));
