@@ -20,12 +20,18 @@ project "Arcade"
 		"include",
 		"dependencies/SFML/include",
 	}
-	
+	debugenvs {
+		-- Start PATH
+		"PATH="
+		.."%{wks.location}/dependencies/SFML/build/lib/%{cfg.buildcfg};"
+		.."%PATH%"
+		-- End PATH
+	}
 	filter "configurations:Debug"
 		defines { "DEBUG" }
-		flags { "Symbols" }
+		symbols "On"
 		libdirs {
-			"dependencies/SFML/build/lib/Debug", -- TODO figure out how to fix this s o i dont have to do above
+			"dependencies/SFML/build/lib/Debug",
 		}
 		links {
 			"sfml-audio-d.lib",
